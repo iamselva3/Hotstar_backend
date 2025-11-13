@@ -7,7 +7,7 @@
       const { name, email, address } = req.body;
 
       // Check if user already exists
-      const userExist = await User.findOne({ email });
+      const userExist = await User.findOne({ name,email });
       if (userExist) {
         return res.status(400).json({ message: "User already exists" });
       }
