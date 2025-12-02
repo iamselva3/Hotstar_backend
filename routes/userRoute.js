@@ -1,15 +1,19 @@
 import express from "express";
-import { create, getAllUsers, getUserById, update, deleteUser, getLoggedInUser } from "../controller/userController.js";
+import { create, getAllUsers, getUserById, update, deleteUser, getLoggedInUser, login } from "../controller/userController.js";
+import { verifyToken } from "../middleware/authUser.js";
 
 const route = express.Router();
 
 // API Routes
 route.post("/user", create);
-route.get("/users", getAllUsers);
-route.get("/user/:id", getUserById);
-route.put("/update/user/:id", update);
-route.delete("/delete/user/:id", deleteUser);
+route.post("/login", login); // Login route
 
-route.get("/user/profile", getLoggedInUser);
+// Protected Routes
+route.get("/users", verifyToken, getAllUsers);
+route.get("/user/:id", verifyToken, getUserById);
+route.put("/update/user/:id", verifyToken, update);
+route.delete("/delete/user/:id", verifyToken, deleteUser);
+
+route.get("/user/profile", verifyToken, getLoggedInUser);
 
 export default route;
